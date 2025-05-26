@@ -1,0 +1,28 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "battleship game for Odin Project",
+  "main": "Ship.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RaihanSharif/Battleship.git"
+  },
+  "author": "Raihan Sharif",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RaihanSharif/Battleship/issues"
+  },
+  "homepage": "https://github.com/RaihanSharif/Battleship#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "babel-jest": "^29.7.0"
+  },
+  "overrides": {
+    "glob": "11.0.1"
+  }
+}

@@ -76,9 +76,62 @@ class Gameboard {
     }
   }
 
+  #alreadyAttacked(x, y) {
+    for (let miss of this.missCoords) {
+      if (miss[0] === x && miss[1] === y) {
+        return true;
+      }
+    }
+    for (let hit of this.hitCoords) {
+      if (hit[0] === x && hit[1] === y) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  #isHit(x, y) {
+    // go through all ships and coords.
+    // get the cells occupied by that ship
+    // if any of the cells match x, y -> it's a hit
+    // if at the end of the loops, none of the ships'
+    // coordinates overlap with the x, y, then it's a miss
+    for (let pos of this.shipsAndPositions) {
+      const shipCells = this.#cellsOccupiedByShip(pos);
+      for (let coord of shipCells) {
+        if (coord[0] === x && coord[1] === y) {
+          return pos.ship;
+        }
+      }
+    }
+    return false;
+  }
+
   receiveAttack(x, y) {
     //hasdf
-    return null;
+    if (x >= 10 || x < 0 || y >= 10 || y < 0) {
+      throw new Error("coordinate out of valid range");
+    }
+
+    // check if the coordinate is already attacked
+    if (this.#alreadyAttacked(x, y)) {
+      throw new Error("coordinate already attacked");
+    }
+
+    const sh = this.#isHit(x, y);
+    if (sh instanceof Ship) {
+      this.hitCoords.push([x, y]);
+      sh.hit();
+      return "successful hit";
+    } else {
+      this.missCoords.push([x, y]);
+      return "missed hit";
+    }
+
+    // register as a hit or a miss
+    this.missCoords.push([x, y]); //TODO: replace placeholder
+    // after every attack, check every ship's isSunk status
+    // if all ships are sunk, then game over
   }
 }
 export { Gameboard };

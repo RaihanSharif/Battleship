@@ -59,7 +59,6 @@ class Gameboard {
   }
 
   // creating a new ship seems like a future problem
-  // TODO: constraints on what kind of ship and how many
   placeShip(x, y, orientation, length) {
     let sh = new Ship(length);
 

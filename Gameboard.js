@@ -104,11 +104,19 @@ class Gameboard {
         }
       }
     }
-    return false;
+    return null;
   }
 
+  isAllShipsSunk() {
+    for (let pos of this.shipsAndPositions) {
+      if (!pos.ship.isSunk) {
+        return false;
+      }
+    }
+    return true;
+  }
   receiveAttack(x, y) {
-    //hasdf
+    //make sure coordinates are valid range
     if (x >= 10 || x < 0 || y >= 10 || y < 0) {
       throw new Error("coordinate out of valid range");
     }
@@ -118,6 +126,8 @@ class Gameboard {
       throw new Error("coordinate already attacked");
     }
 
+    // if it's a hit, push to hitsCoords and call the ship's hit() function
+    // else save to missedHit array
     const sh = this.#isHit(x, y);
     if (sh instanceof Ship) {
       this.hitCoords.push([x, y]);
@@ -127,11 +137,6 @@ class Gameboard {
       this.missCoords.push([x, y]);
       return "missed hit";
     }
-
-    // register as a hit or a miss
-    this.missCoords.push([x, y]); //TODO: replace placeholder
-    // after every attack, check every ship's isSunk status
-    // if all ships are sunk, then game over
   }
 }
 export { Gameboard };

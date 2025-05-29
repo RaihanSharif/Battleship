@@ -53,3 +53,49 @@ describe("receiveAttack function tests", () => {
 
   it("prevents shot on previous missed coordinate", () => {});
 });
+
+describe("test isAllShipsSunk", () => {
+  it("should  all ships sunk", () => {
+    const board = new Gameboard();
+    board.placeShip(0, 0, "horizontal", 3);
+    board.placeShip(0, 1, "vertical", 2);
+
+    // attacking first ship
+    board.receiveAttack(0, 0);
+    board.receiveAttack(1, 0);
+    board.receiveAttack(2, 0);
+
+    // attacking second ship
+    board.receiveAttack(0, 1);
+    board.receiveAttack(0, 2);
+    expect(board.isAllShipsSunk()).toBe(true);
+  });
+
+  it("does not report all ships are sunk when only some ships are sunk", () => {
+    const board = new Gameboard();
+    board.placeShip(0, 0, "horizontal", 3);
+    board.placeShip(0, 1, "vertical", 2);
+
+    // not attacking the first ship, at least one ship should be intact
+    // board.receiveAttack(0, 0);
+    // board.receiveAttack(1, 0);
+    // board.receiveAttack(2, 0);
+
+    // attacking second ship
+    board.receiveAttack(0, 1);
+    board.receiveAttack(0, 2);
+    expect(board.isAllShipsSunk()).toBe(false);
+  });
+});
+// better way to test if array contains something
+// it("test array", () => {
+//   const arr = [
+//     [1, 2],
+//     [3, 4],
+//     [5, 6],
+//   ];
+
+//   const arr1 = [3, 4];
+//   const arr2 = [3, 3];
+//   expect(arr).toContainEqual(arr1);
+// });

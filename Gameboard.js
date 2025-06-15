@@ -2,8 +2,8 @@ import { Ship } from "./Ship.js";
 class Gameboard {
   constructor() {
     this.shipsAndPositions = [];
-    this.missCoords = []; // missed shots
-    this.hitCoords = []; // successful hits
+    this.missCoords = []; // missed shots, [x, y]
+    this.hitCoords = []; // successful hits, [x, y]
   }
 
   // check if the coordinate is valid
@@ -132,10 +132,10 @@ class Gameboard {
     if (sh instanceof Ship) {
       this.hitCoords.push([x, y]);
       sh.hit();
-      return "successful hit";
+      return true;
     } else {
       this.missCoords.push([x, y]);
-      return "missed hit";
+      return false;
     }
   }
 }

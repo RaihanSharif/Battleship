@@ -40,10 +40,10 @@ describe("receiveAttack function tests", () => {
   it("record a new successful hit", () => {
     const board = new Gameboard();
     board.placeShip(0, 0, "horizontal", 4);
-    expect(board.receiveAttack(0, 0)).toEqual("successful hit");
-    expect(board.receiveAttack(1, 0)).toEqual("successful hit");
-    expect(board.receiveAttack(2, 0)).toEqual("successful hit");
-    expect(board.receiveAttack(3, 0)).toEqual("successful hit");
+    expect(board.receiveAttack(0, 0)).toBe(true);
+    expect(board.receiveAttack(1, 0)).toBe(true);
+    expect(board.receiveAttack(2, 0)).toBe(true);
+    expect(board.receiveAttack(3, 0)).toBe(true);
 
     // not the place for this, but seems to work. ship was sunk
     // expect(board.shipsAndPositions[0].ship.isSunk).toBe(true);

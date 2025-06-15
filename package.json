@@ -2,7 +2,7 @@
   "name": "battleship",
   "version": "1.0.0",
   "description": "battleship game for Odin Project",
-  "main": "Ship.js",
+  "main": "gameDriver.js",
   "scripts": {
     "test": "jest"
   },

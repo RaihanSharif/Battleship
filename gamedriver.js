@@ -38,5 +38,7 @@ playerOneContainer.addEventListener("click", (event) => {
     const attackResult = playerOne.board.receiveAttack(x, y);
     console.log(attackResult);
     changeCellStatus(event.target, attackResult);
+    console.log(playerOne.board.missCoords);
+    console.log(playerOne.board.hitCoords);
   }
 });

@@ -11,35 +11,29 @@ function arrEquals(a, b) {
 // black for missed shots
 // green for successful hits
 function renderOpponentBoard(board, container) {
-  for (let i = 0; i < 10; i++) {
-    const row = document.createElement("div");
-    container.appendChild(row);
-    row.id = i.toString();
-    for (let j = 0; j < 10; j++) {
-      // TODO: check to make sure the rows and columns line up right
-      const cell = document.createElement("div");
-      const iVal = i.toString();
-      const jVal = j.toString();
-      cell.id = `${iVal}${jVal}`;
-      cell.classList.add("boardCell");
+  let x = 0;
+  let y = 0;
 
-      // if the cell is in the miss list
-      // display a miss symbol
-      for (let cell of board.missCoords) {
-        if (arrEquals(cell, [i, j])) {
-          cell.classList.add("missedCell");
-        }
-      }
-
-      // if the cell is in the hit list
-      // display a hit symbol
-      for (let cell of board.hitCoords) {
-        if (arrEquals(cell, [i, j])) {
-          cell.classList.add("hitCell");
-        }
-      }
-      row.appendChild(cell);
+  for (let i = 0; i < 100; i++) {
+    const cell = document.createElement("div");
+    cell.classList.add("boardCell");
+    cell.id = `${x}${y}`;
+    x++;
+    if (x == 10) {
+      x = 0;
+      y++;
     }
+    for (let coord of board.missCoords) {
+      if (arrEquals(coord, [x, y])) {
+        cell.classList.add("missedCell");
+      }
+    }
+    for (let coord of board.hitCoords) {
+      if (arrEquals(coord, [x, y])) {
+        cell.classList.add("hitCell");
+      }
+    }
+    container.appendChild(cell);
   }
 }
 

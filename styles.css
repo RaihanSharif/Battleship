@@ -6,16 +6,18 @@ body {
 
 /* TODO: dynamic sizing */
 .boardContainer {
-  width: 1000px;
-  height: 1000px;
+  width: 90%;
+  height: 90%;
   box-sizing: border-box;
   display: grid;
   background-color: aliceblue;
-  grid-template-columns: repeat(10, 100px);
+  grid-template-columns: repeat(10, 1fr);
+  aspect-ratio: 1/1;
 }
+
 .boardCell {
-  width: 100px;
-  height: 100px;
+  min-width: 10px;
+  min-height: 10px;
   box-sizing: border-box;
   background-color: rgb(140, 118, 140);
   border: 1px green solid;

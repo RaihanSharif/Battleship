@@ -99,6 +99,7 @@ function handleAttack(event, board) {
     const y = parseInt(target.id[1]);
     const attackResult = board.receiveAttack(x, y);
     changeCellStatus(target, attackResult);
+    return attackResult;
   }
 }
 

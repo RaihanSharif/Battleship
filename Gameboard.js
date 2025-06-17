@@ -1,7 +1,8 @@
 import { Ship } from "./Ship.js";
 class Gameboard {
   constructor() {
-    this.shipsAndPositions = [];
+    // TODO: refactor store all the coords occupied by a ship
+    this.shipsAndPositions = []; // objects of the form { coords: [x, y], orientation: orientation, ship: sh }
     this.missCoords = []; // missed shots, [x, y]
     this.hitCoords = []; // successful hits, [x, y]
   }
@@ -22,31 +23,31 @@ class Gameboard {
     return true;
   }
 
-  #cellsOccupiedByShip(shipAndPos) {
+  cellsOccupiedByShip(shipAndPos) {
     const orientation = shipAndPos.orientation;
     const len = shipAndPos.ship.length;
     const coords = shipAndPos.coords;
-    const cellsOccupiedByShip = [];
+    const occupiedCells = [];
 
     if (orientation === "horizontal") {
       for (let i = 0; i < len; i++) {
-        cellsOccupiedByShip.push([coords[0] + i, coords[1]]);
+        occupiedCells.push([coords[0] + i, coords[1]]);
       }
     } else {
       for (let i = 0; i < len; i++) {
-        cellsOccupiedByShip.push([coords[0], coords[1] + i]);
+        occupiedCells.push([coords[0], coords[1] + i]);
       }
     }
-    return cellsOccupiedByShip;
+    return occupiedCells;
   }
 
   #isValidPosition(position) {
     // the cells occupied by the current ship
     // compared to the cells occupied by the other ships
     // if there is an overlap, return false
-    const currShip = this.#cellsOccupiedByShip(position);
+    const currShip = this.cellsOccupiedByShip(position);
     for (let shipPos of this.shipsAndPositions) {
-      const existingShip = this.#cellsOccupiedByShip(shipPos);
+      const existingShip = this.cellsOccupiedByShip(shipPos);
       for (let cell of currShip) {
         for (let existingCell of existingShip) {
           if (cell[0] === existingCell[0] && cell[1] === existingCell[1]) {
@@ -76,7 +77,7 @@ class Gameboard {
     }
   }
 
-  #alreadyAttacked(x, y) {
+  alreadyAttacked(x, y) {
     for (let miss of this.missCoords) {
       if (miss[0] === x && miss[1] === y) {
         return true;
@@ -97,7 +98,7 @@ class Gameboard {
     // if at the end of the loops, none of the ships'
     // coordinates overlap with the x, y, then it's a miss
     for (let pos of this.shipsAndPositions) {
-      const shipCells = this.#cellsOccupiedByShip(pos);
+      const shipCells = this.cellsOccupiedByShip(pos);
       for (let coord of shipCells) {
         if (coord[0] === x && coord[1] === y) {
           return pos.ship;
@@ -116,13 +117,15 @@ class Gameboard {
     return true;
   }
   receiveAttack(x, y) {
+    console.log(`inside receiveAttack ${this}`);
+    console.log(this);
     //make sure coordinates are valid range
     if (x >= 10 || x < 0 || y >= 10 || y < 0) {
       throw new Error("coordinate out of valid range");
     }
 
     // check if the coordinate is already attacked
-    if (this.#alreadyAttacked(x, y)) {
+    if (this.alreadyAttacked(x, y)) {
       throw new Error("coordinate already attacked");
     }
 

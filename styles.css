@@ -62,10 +62,12 @@ header {
   height: 1fr;
   /* min-height: 10px; */
   box-sizing: border-box;
-  background-color: rgb(210, 202, 210);
+  background-color: rgb(255, 255, 255);
   border: 1px rgb(0, 0, 0) solid;
   margin: 0;
   border-collapse: collapse;
+  display: grid;
+  place-content: center;
 }
 
 .missedCell {
@@ -81,4 +83,13 @@ p {
   text-align: center;
   font-size: 2rem;
   padding: 1rem;
+}
+
+.shipCell {
+  background-color: grey;
+  border: 2px solid black;
+}
+
+.playerShipHit {
+  content: "💥" / "x";
 }

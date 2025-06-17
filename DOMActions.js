@@ -1,14 +1,12 @@
 // DOM manipulation code
 
-// render a board onto a DOM container element
-
-// simple arrays with numbers
+// for comparing [x, y] coords
 function arrEquals(a, b) {
   return a.toString() === b.toString();
 }
 
 // renders opponent board
-// black for missed shots
+// red for missed shots
 // green for successful hits
 function renderOpponentBoard(board, container) {
   let x = 0;
@@ -19,11 +17,7 @@ function renderOpponentBoard(board, container) {
     cell.classList.add("boardCell");
     cell.id = `${x}${y}`;
     cell.textContent = `(${x}, ${y})`;
-    x++;
-    if (x == 10) {
-      x = 0;
-      y++;
-    }
+
     for (let coord of board.missCoords) {
       if (arrEquals(coord, [x, y])) {
         cell.classList.add("missedCell");
@@ -32,7 +26,13 @@ function renderOpponentBoard(board, container) {
     for (let coord of board.hitCoords) {
       if (arrEquals(coord, [x, y])) {
         cell.classList.add("hitCell");
+        cell.textContent = "💥";
       }
+    }
+    x++;
+    if (x == 10) {
+      x = 0;
+      y++;
     }
     container.appendChild(cell);
   }
@@ -41,17 +41,17 @@ function renderOpponentBoard(board, container) {
 function renderPlayerBoard(board, container) {
   let x = 0;
   let y = 0;
+  const occupiedCells = []; // array of coords [x, y]
+  for (let shPos of board.shipsAndPositions) {
+    occupiedCells.push(board.cellsOccupiedByShip(shPos));
+  }
 
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
     cell.classList.add("boardCell");
     cell.id = `${x}${y}`;
     cell.textContent = `(${x}, ${y})`;
-    x++;
-    if (x == 10) {
-      x = 0;
-      y++;
-    }
+
     for (let coord of board.missCoords) {
       if (arrEquals(coord, [x, y])) {
         cell.classList.add("missedCell");
@@ -59,17 +59,33 @@ function renderPlayerBoard(board, container) {
     }
     for (let coord of board.hitCoords) {
       if (arrEquals(coord, [x, y])) {
-        cell.classList.add("hitCell");
+        cell.classList.add("playerShipHit");
+        cell.textContent = "💥";
       }
+    }
+
+    //
+    for (let ship of occupiedCells) {
+      for (let coord of ship) {
+        if (arrEquals(coord, [x, y])) {
+          cell.classList.add("shipCell");
+        }
+      }
+    }
+    x++;
+    if (x == 10) {
+      x = 0;
+      y++;
     }
     container.appendChild(cell);
   }
 }
 
-// change a single cell after a
+// change a single cell after an attack
 function changeCellStatus(cell, hitStatus) {
   if (hitStatus === true) {
     cell.classList.add("hitCell");
+    cell.textContent = "💥";
   }
   if (hitStatus === false) {
     cell.classList.add("missedCell");

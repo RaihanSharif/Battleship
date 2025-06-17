@@ -117,8 +117,6 @@ class Gameboard {
     return true;
   }
   receiveAttack(x, y) {
-    console.log(`inside receiveAttack ${this}`);
-    console.log(this);
     //make sure coordinates are valid range
     if (x >= 10 || x < 0 || y >= 10 || y < 0) {
       throw new Error("coordinate out of valid range");

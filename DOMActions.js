@@ -92,4 +92,19 @@ function changeCellStatus(cell, hitStatus) {
   }
 }
 
-export { renderOpponentBoard, renderPlayerBoard, changeCellStatus };
+function handleAttack(event, board) {
+  const target = event.target;
+  if (target.classList.contains("boardCell")) {
+    const x = parseInt(target.id[0]);
+    const y = parseInt(target.id[1]);
+    const attackResult = board.receiveAttack(x, y);
+    changeCellStatus(target, attackResult);
+  }
+}
+
+export {
+  renderOpponentBoard,
+  renderPlayerBoard,
+  changeCellStatus,
+  handleAttack,
+};

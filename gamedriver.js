@@ -5,7 +5,7 @@ import { Player } from "./Player.js";
 import {
   renderOpponentBoard,
   renderPlayerBoard,
-  changeCellStatus,
+  handleAttack,
 } from "./DOMActions.js";
 
 const humanPlayer = new Player();
@@ -26,24 +26,13 @@ initBoards();
 const computerPlayerContainer = document.getElementById(
   "opponent-board-container"
 );
-
 renderOpponentBoard(computerPlayer.board, computerPlayerContainer);
 
-computerPlayerContainer.addEventListener("click", (event) => {
-  // TODO: move this functionality to the DOMActions module
-  if (event.target.classList.contains("boardCell")) {
-    const x = parseInt(event.target.id[0]);
-    const y = parseInt(event.target.id[1]);
-    const attackResult = computerPlayer.board.receiveAttack(x, y);
-    changeCellStatus(event.target, attackResult);
-  }
-});
-
-humanPlayer.board.receiveAttack(0, 0);
 const humanPlayerContainer = document.getElementById("player-board-container");
 renderPlayerBoard(humanPlayer.board, humanPlayerContainer);
 
-humanPlayerContainer.addEventListener("click", (event) => {
-  // get ship that was clicked, then roate it, using a rotate function
-  // in DOMActions
+computerPlayerContainer.addEventListener("click", (event) => {
+  handleAttack(event, computerPlayer.board);
 });
+
+humanPlayerContainer.addEventListener("click", (event) => {});

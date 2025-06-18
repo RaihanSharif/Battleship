@@ -8,8 +8,8 @@ import {
   handlePlayerAttack,
 } from "./DOMActions.js";
 
-const humanPlayer = new Player();
-const computerPlayer = new ComputerPlayer();
+let humanPlayer;
+let computerPlayer;
 
 const computerBoardContainer = document.getElementById(
   "opponent-board-container"
@@ -17,6 +17,8 @@ const computerBoardContainer = document.getElementById(
 const humanBoardContainer = document.getElementById("player-board-container");
 
 function initBoards() {
+  humanPlayer = new Player();
+  computerPlayer = new ComputerPlayer();
   humanPlayer.board.placeShip(0, 0, "horizontal", 6);
   humanPlayer.board.placeShip(1, 1, "vertical", 3);
   humanPlayer.board.placeShip(3, 4, "horizontal", 4);
@@ -31,7 +33,15 @@ function initBoards() {
   renderPlayerBoard(humanPlayer.board, humanBoardContainer);
 }
 
-initBoards();
+// initBoards();
+
+const newGameBtn = document.getElementById("new-game-btn");
+
+newGameBtn.addEventListener("click", () => {
+  initBoards();
+});
+
+newGameBtn.click();
 
 let turn = true;
 // human player's turn
@@ -44,13 +54,13 @@ computerBoardContainer.addEventListener("click", (event) => {
         turn = false;
       }
     } catch (e) {
-      console.log(e.message);
+      console.log(`human attack ` + e.message);
     }
 
     if (humanAttack === false) {
       turn = !computerPlayer.playTurn(humanPlayer.board);
       if (humanPlayer.board.isAllShipsSunk()) {
-        setTimeout(() => alert("you lost!"), 100);
+        setTimeout(() => alert("you lost"), 100);
       }
     } else if (computerPlayer.board.isAllShipsSunk()) {
       setTimeout(() => alert("You won!!"), 100);

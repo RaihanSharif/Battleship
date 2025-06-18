@@ -36,14 +36,14 @@ class ComputerPlayer extends Player {
 
     while (attack) {
       try {
+        coords = this.generateCoords();
         attack = board.receiveAttack(coords[0], coords[1]);
       } catch (e) {
-        console.log(e.message);
+        console.log(`computer attack ${coords} ` + e.message);
       }
       if (attack == false) {
         return attack;
       }
-      coords = this.generateCoords();
     }
   }
 }

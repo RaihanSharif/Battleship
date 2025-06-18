@@ -124,7 +124,7 @@ class Gameboard {
 
     // check if the coordinate is already attacked
     if (this.alreadyAttacked(x, y)) {
-      throw new Error("coordinate already attacked");
+      throw new Error("already attacked");
     }
 
     // if it's a hit, push to hitsCoords and call the ship's hit() function

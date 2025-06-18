@@ -11,7 +11,7 @@ function arrEquals(a, b) {
 function renderOpponentBoard(board, container) {
   let x = 0;
   let y = 0;
-
+  container.innerHTML = "";
   for (let i = 0; i < 100; i++) {
     const cell = document.createElement("div");
     cell.classList.add("boardCell");
@@ -41,6 +41,9 @@ function renderOpponentBoard(board, container) {
 function renderPlayerBoard(board, container) {
   let x = 0;
   let y = 0;
+
+  container.innerHTML = "";
+
   const occupiedCells = []; // array of coords [x, y]
   for (let shPos of board.shipsAndPositions) {
     occupiedCells.push(board.cellsOccupiedByShip(shPos));
@@ -64,7 +67,7 @@ function renderPlayerBoard(board, container) {
       }
     }
 
-    //
+    // renders the ships on the grid
     for (let ship of occupiedCells) {
       for (let coord of ship) {
         if (arrEquals(coord, [x, y])) {
@@ -92,14 +95,12 @@ function changeCellStatus(cell, hitStatus) {
   }
 }
 
-function handleAttack(event, board) {
+function handlePlayerAttack(event, board) {
   const target = event.target;
   if (target.classList.contains("boardCell")) {
     const x = parseInt(target.id[0]);
     const y = parseInt(target.id[1]);
-    const attackResult = board.receiveAttack(x, y);
-    changeCellStatus(target, attackResult);
-    return attackResult;
+    return board.receiveAttack(x, y);
   }
 }
 
@@ -107,5 +108,5 @@ export {
   renderOpponentBoard,
   renderPlayerBoard,
   changeCellStatus,
-  handleAttack,
+  handlePlayerAttack,
 };

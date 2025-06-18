@@ -1,26 +1,27 @@
 import { Gameboard } from "./Gameboard.js";
 import { Ship } from "./Ship.js";
-import { Player } from "./Player.js";
+import { Player, ComputerPlayer } from "./Player.js";
 
 import {
   renderOpponentBoard,
   renderPlayerBoard,
-  handleAttack,
+  handlePlayerAttack,
 } from "./DOMActions.js";
 
 const humanPlayer = new Player();
-const computerPlayer = new Player();
+const computerPlayer = new ComputerPlayer();
 
 const computerBoardContainer = document.getElementById(
   "opponent-board-container"
 );
 const humanBoardContainer = document.getElementById("player-board-container");
 
-let humanTurn = true;
-
 function initBoards() {
-  humanPlayer.board.placeShip(0, 0, "horizontal", 2);
-  humanPlayer.board.placeShip(3, 4, "vertical", 3);
+  humanPlayer.board.placeShip(0, 0, "horizontal", 6);
+  humanPlayer.board.placeShip(1, 1, "vertical", 3);
+  humanPlayer.board.placeShip(3, 4, "horizontal", 4);
+  humanPlayer.board.placeShip(2, 5, "vertical", 1);
+  humanPlayer.board.placeShip(6, 6, "horizontal", 1);
   humanPlayer.board.placeShip(6, 6, "horizontal", 1);
 
   computerPlayer.board.placeShip(0, 0, "horizontal", 2);
@@ -32,21 +33,29 @@ function initBoards() {
 
 initBoards();
 
-// human attacks the computer board
+let turn = true;
+// human player's turn
 computerBoardContainer.addEventListener("click", (event) => {
-  if (humanTurn) {
-    // if attack fails, other player's turn
-    if (!handleAttack(event, computerPlayer.board)) {
-      humanTurn = !humanTurn;
+  let humanAttack;
+  if (turn) {
+    try {
+      humanAttack = handlePlayerAttack(event, computerPlayer.board);
+      if (humanAttack == false) {
+        turn = false;
+      }
+    } catch (e) {
+      console.log(e.message);
+    }
+
+    if (humanAttack === false) {
+      turn = !computerPlayer.playTurn(humanPlayer.board);
+      if (humanPlayer.board.isAllShipsSunk()) {
+        setTimeout(() => alert("you lost!"), 100);
+      }
     } else if (computerPlayer.board.isAllShipsSunk()) {
-      // annouce winner
-      // make it wait for the screen rendering to finish
-      setTimeout(() => alert("You win!"), 100);
+      setTimeout(() => alert("You won!!"), 100);
     }
   }
-});
-
-humanBoardContainer.addEventListener("click", (event) => {
-  // get computer player's input
-  // pass that to attack handler
+  renderOpponentBoard(computerPlayer.board, computerBoardContainer);
+  renderPlayerBoard(humanPlayer.board, humanBoardContainer);
 });
